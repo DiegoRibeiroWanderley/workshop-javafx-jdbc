@@ -7,15 +7,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class Main extends Application {
     @Override
-    public void start(Stage stage) throws IOException{
+    public void start(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
+            Parent parent = loader.load();
 
-            Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View.fxml")));
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.show();
+            Scene mainScene = new Scene(parent);
+            primaryStage.setScene(mainScene);
+            primaryStage.setTitle("Sample JavaFX application");
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
