@@ -8,4 +8,5 @@ module com.diegoribeiro.javafxws {
     exports com.diegoribeiro.javafxws;
     exports com.diegoribeiro.javafxws.model.entities;
     exports com.diegoribeiro.javafxws.model.services;
+    exports com.diegoribeiro.javafxws.listeners;
 }

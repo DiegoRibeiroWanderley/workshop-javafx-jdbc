@@ -1,6 +1,7 @@
 package com.diegoribeiro.javafxws;
 
 import com.diegoribeiro.javafxws.db.DbException;
+import com.diegoribeiro.javafxws.listeners.DataChangeListener;
 import com.diegoribeiro.javafxws.model.entities.Department;
 import com.diegoribeiro.javafxws.model.services.DepartmentService;
 import com.diegoribeiro.javafxws.util.Alerts;
@@ -15,6 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DepartmentFormController implements Initializable {
@@ -22,6 +25,8 @@ public class DepartmentFormController implements Initializable {
     private Department entity;
 
     private DepartmentService departmentService;
+
+    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     @FXML
     private TextField txtId;
@@ -46,6 +51,10 @@ public class DepartmentFormController implements Initializable {
         this.departmentService = departmentService;
     }
 
+    public void subscribeDataChangeListener(DataChangeListener dataChangeListener) {
+        dataChangeListeners.add(dataChangeListener);
+    }
+
     @FXML
     public void onBtSaveAction(ActionEvent event) {
         if (entity == null) {
@@ -59,9 +68,17 @@ public class DepartmentFormController implements Initializable {
             entity = getFormData();
             departmentService.saveOrUpdate(entity);
 
+            notifyDataChangeListeners();
+
             Utils.currentStage(event).close();
         } catch (DbException e) {
             Alerts.showAlert("Error saving object", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void notifyDataChangeListeners() {
+        for (DataChangeListener dataChangeListener : dataChangeListeners) {
+            dataChangeListener.onDataChanged();
         }
     }
 
