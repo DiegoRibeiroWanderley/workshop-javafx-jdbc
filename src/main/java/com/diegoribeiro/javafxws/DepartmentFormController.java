@@ -1,5 +1,6 @@
 package com.diegoribeiro.javafxws;
 
+import com.diegoribeiro.javafxws.model.entities.Department;
 import com.diegoribeiro.javafxws.util.Constraints;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class DepartmentFormController implements Initializable {
+
+    private Department entity;
 
     @FXML
     private TextField txtId;
@@ -28,6 +31,10 @@ public class DepartmentFormController implements Initializable {
     @FXML
     private Button btCancel;
 
+    public void setDepartment(Department entity) {
+        this.entity = entity;
+    }
+
     @FXML
     public void onBtSaveAction(ActionEvent event) {
         System.out.println("onBtSaveAction");
@@ -43,8 +50,17 @@ public class DepartmentFormController implements Initializable {
         initializeNodes();
     }
 
-    private void initializeNodes(){
+    private void initializeNodes() {
         Constraints.setTextFieldInteger(txtId);
         Constraints.setTextFieldMaxLength(txtName, 40);
+    }
+
+    public void updateFormData() {
+        if (entity == null) {
+            throw new IllegalStateException("Entity was null");
+        }
+
+        txtId.setText(String.valueOf(entity.getId()));
+        txtName.setText(entity.getName());
     }
 }
