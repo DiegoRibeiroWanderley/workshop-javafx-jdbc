@@ -1,10 +1,15 @@
 package com.diegoribeiro.javafxws;
 
+import com.diegoribeiro.javafxws.db.DbException;
 import com.diegoribeiro.javafxws.model.entities.Department;
+import com.diegoribeiro.javafxws.model.services.DepartmentService;
+import com.diegoribeiro.javafxws.util.Alerts;
 import com.diegoribeiro.javafxws.util.Constraints;
+import com.diegoribeiro.javafxws.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -15,6 +20,8 @@ import java.util.ResourceBundle;
 public class DepartmentFormController implements Initializable {
 
     private Department entity;
+
+    private DepartmentService departmentService;
 
     @FXML
     private TextField txtId;
@@ -35,14 +42,41 @@ public class DepartmentFormController implements Initializable {
         this.entity = entity;
     }
 
+    public void setDepartmentService(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
+
     @FXML
     public void onBtSaveAction(ActionEvent event) {
-        System.out.println("onBtSaveAction");
+        if (entity == null) {
+            throw new IllegalStateException("Entity was null");
+        }
+        if (departmentService == null) {
+            throw new IllegalStateException("Department Service was null");
+        }
+
+        try {
+            entity = getFormData();
+            departmentService.saveOrUpdate(entity);
+
+            Utils.currentStage(event).close();
+        } catch (DbException e) {
+            Alerts.showAlert("Error saving object", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private Department getFormData() {
+        Department obj = new Department();
+
+        obj.setId(Utils.tryParseToInt(txtId.getText()));
+        obj.setName(txtName.getText());
+
+        return obj;
     }
 
     @FXML
     public void onBtCancelAction(ActionEvent event) {
-        System.out.println("onBtCancelAction");
+        Utils.currentStage(event).close();
     }
 
     @Override
