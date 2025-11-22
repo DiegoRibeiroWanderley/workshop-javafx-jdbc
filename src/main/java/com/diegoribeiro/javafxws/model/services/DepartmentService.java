@@ -1,19 +1,16 @@
 package com.diegoribeiro.javafxws.model.services;
 
+import com.diegoribeiro.javafxws.model.dao.DaoFactory;
+import com.diegoribeiro.javafxws.model.dao.DepartmentDao;
 import com.diegoribeiro.javafxws.model.entities.Department;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentService {
 
+    private DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
+
     public List<Department> findAll(){
-        List<Department> departments = new ArrayList<>();
-
-        departments.add(new Department(1, "Books"));
-        departments.add(new Department(2, "Computers"));
-        departments.add(new Department(3, "Eletronics"));
-
-        return departments;
+        return departmentDao.findAll();
     }
 }

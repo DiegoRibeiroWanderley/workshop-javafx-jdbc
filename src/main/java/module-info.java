@@ -1,6 +1,7 @@
 module com.diegoribeiro.javafxws {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
     opens com.diegoribeiro.javafxws to javafx.fxml;
