@@ -2,7 +2,6 @@ package com.diegoribeiro.javafxws.model.services;
 
 import com.diegoribeiro.javafxws.model.dao.DaoFactory;
 import com.diegoribeiro.javafxws.model.dao.SellerDao;
-import com.diegoribeiro.javafxws.model.entities.Department;
 import com.diegoribeiro.javafxws.model.entities.Seller;
 
 import java.util.List;
